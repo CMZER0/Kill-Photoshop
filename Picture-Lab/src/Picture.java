@@ -205,10 +205,10 @@ public class Picture extends SimplePicture {
 		Pixel rightPixel = null;
 		int height = pixels.length - 1;
 		int width = pixels[0].length;
-		for (int row = pixels.length - 1; row > pixels.length; row--) {
-			for (int col = pixels.length - 1; col > width; col--) {
+		for (int row = 0; row < 479; row++) {
+			for (int col = 0; col < 479; col++) {
 				leftPixel = pixels[row][col];
-				rightPixel = pixels[height - row][col];
+				rightPixel = pixels[col][row];
 				rightPixel.setColor(leftPixel.getColor());
 			}
 		}
@@ -239,18 +239,19 @@ public class Picture extends SimplePicture {
 		Pixel[][] pixels = this.getPixels2D();
 		Pixel leftPixel = null;
 		Pixel rightPixel = null;
-		int width = pixels[0].length;
-		for (int row = 0; row < pixels.length; row++) {
-			for (int col = 0; col < width / 2; col++) {
+		int height = pixels.length - 1;
+		int width = pixels[0].length - 1;
+		for (int row = 160; row < 200; row++) {
+			for (int col = 0; col < 299; col++) {
 				leftPixel = pixels[row][col];
-				rightPixel = pixels[row][width - 1 - col];
+				rightPixel = pixels[(pixels.length - 1 - row) + (row / 2)][col];
 				rightPixel.setColor(leftPixel.getColor());
 			}
 		}
 	}
 
 	public void mirrorGull() {
-		int mirrorPoint = 300;
+		int mirrorPoint = 323;
 		Pixel leftPixel = null;
 		Pixel rightPixel = null;
 		int count = 0;
@@ -336,26 +337,47 @@ public class Picture extends SimplePicture {
 	 * Main method for testing - each class in Java can have a main method
 	 */
 	public static void main(String[] args) {
-		Picture beach = new Picture("seagull.jpg");
-		beach.explore();
-		// beach.zeroBlue();
-
+		Picture beach = new Picture("beach.jpg");
 		// A5 3 - 6//
+		// beach = new Picture("beach.jpg");
 		// beach.keepOnlyBlue();
+		// beach.explore();
+
 		// beach.negate();
+		// beach.explore();
+
 		// beach.grayscale();
+		// beach.explore();
+
+		// beach = new Picture("water.jpg");
 		// beach.fixUnderwater();
+		// beach.explore();
 
-		// A6 1 - 6//
-		// beach.mirrorVertical(); //1
-		// beach.mirrorHorizontal(); //2
-		// beach.mirrorHorizontalBotToTop(); //3
-		// beach.mirrorDiagonal();
+		// A6 1 - 4//
+		beach = new Picture("redMotorcycle.jpg");
+		// beach.mirrorVertical(); // 1
+		// beach.explore();
 
-		// A7 1-3
-		// beach.mirrorTemple();
-		// beach.mirrorArms();
-		beach.mirrorGull();
+		// beach.mirrorHorizontal(); // 2
+		// beach.explore();
+
+		// beach.mirrorHorizontalBotToTop(); // 3
+		// beach.explore();
+
+		beach.mirrorDiagonal(); // 4
 		beach.explore();
+
+		// // A7 1-3
+		// beach = new Picture("temple.jpg");
+		// beach.mirrorTemple();
+		// beach.explore();
+		// //
+		beach = new Picture("snowman.jpg");
+		beach.mirrorArms();
+		beach.explore();
+		// //
+		// beach = new Picture("seagull.jpg");
+		// beach.mirrorGull();
+		// beach.explore();
 	}
 } // this } is the end of class Picture, put all new methods before this
