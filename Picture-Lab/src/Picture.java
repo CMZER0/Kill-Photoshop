@@ -6,6 +6,10 @@ import java.text.*;
 import java.util.*;
 import java.util.List; // resolves problem with java.awt.List and java.util.List
 
+import javax.swing.tree.RowMapper;
+
+import org.graalvm.compiler.core.phases.HighTier;
+
 /**
  * A class that represents a picture. This class inherits from SimplePicture and
  * allows the student to add functionality to the Picture class.
@@ -147,6 +151,69 @@ public class Picture extends SimplePicture {
 		}
 	}
 
+	/** Mirrors picture verticaly right to left */
+	public void mirrorVerticalRightToLeft() {
+		Pixel[][] pixels = this.getPixels2D();
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		int width = pixels[0].length;
+		for (int row = pixels.length - 1; row > pixels.length; row--) {
+			for (int col = 0; col < width / 2; col++) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[row][width - 1 - col];
+				rightPixel.setColor(leftPixel.getColor());
+			}
+		}
+	}
+
+	/** Mirrors picture horizontaly */
+	public void mirrorHorizontal() {
+		Pixel[][] pixels = this.getPixels2D();
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		int height = pixels.length - 1;
+		int width = pixels[0].length;
+		for (int row = 0; row < pixels.length / 2; row++) {
+			for (int col = 0; col < width; col++) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[height - row][width - 1 - col];
+				rightPixel.setColor(leftPixel.getColor());
+			}
+		}
+	}
+
+	/** Mirrors picture bottom to top */
+	public void mirrorHorizontalBotToTop() {
+		Pixel[][] pixels = this.getPixels2D();
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		int height = pixels.length - 1;
+		int width = pixels[0].length;
+		for (int row = pixels.length - 1; row > 0; row--) {
+			for (int col = 0; col < width; col++) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[height - row][width - 1 - col];
+				rightPixel.setColor(leftPixel.getColor());
+			}
+		}
+	}
+
+	/** Mirrors picture diagonaly */
+	public void mirrorDiagonal() {
+		Pixel[][] pixels = this.getPixels2D();
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		int height = pixels.length - 1;
+		int width = pixels[0].length;
+		for (int row = pixels.length - 1; row > pixels.length; row--) {
+			for (int col = pixels.length - 1; col > width; col--) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[height - row][col];
+				rightPixel.setColor(leftPixel.getColor());
+			}
+		}
+	}
+
 	/** Mirror just part of a picture of a temple */
 	public void mirrorTemple() {
 		int mirrorPoint = 276;
@@ -163,7 +230,43 @@ public class Picture extends SimplePicture {
 				rightPixel = pixels[row][mirrorPoint - col + mirrorPoint];
 				rightPixel.setColor(leftPixel.getColor());
 			}
+			count++;
 		}
+		System.out.println("Count: " + count);
+	}
+
+	public void mirrorArms() {
+		Pixel[][] pixels = this.getPixels2D();
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		int width = pixels[0].length;
+		for (int row = 0; row < pixels.length; row++) {
+			for (int col = 0; col < width / 2; col++) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[row][width - 1 - col];
+				rightPixel.setColor(leftPixel.getColor());
+			}
+		}
+	}
+
+	public void mirrorGull() {
+		int mirrorPoint = 300;
+		Pixel leftPixel = null;
+		Pixel rightPixel = null;
+		int count = 0;
+		Pixel[][] pixels = this.getPixels2D();
+
+		// loop through the rows
+		for (int row = 0; row < mirrorPoint; row++) {
+			// loop from 13 to just before the mirror point
+			for (int col = 0; col < mirrorPoint; col++) {
+				leftPixel = pixels[row][col];
+				rightPixel = pixels[row][mirrorPoint - col + mirrorPoint];
+				rightPixel.setColor(leftPixel.getColor());
+			}
+			count++;
+		}
+		System.out.println("Count: " + count);
 	}
 
 	/**
@@ -233,16 +336,26 @@ public class Picture extends SimplePicture {
 	 * Main method for testing - each class in Java can have a main method
 	 */
 	public static void main(String[] args) {
-		Picture beach = new Picture("water.jpg");
+		Picture beach = new Picture("seagull.jpg");
 		beach.explore();
 		// beach.zeroBlue();
 
+		// A5 3 - 6//
 		// beach.keepOnlyBlue();
 		// beach.negate();
 		// beach.grayscale();
+		// beach.fixUnderwater();
 
-		beach.fixUnderwater();
+		// A6 1 - 6//
+		// beach.mirrorVertical(); //1
+		// beach.mirrorHorizontal(); //2
+		// beach.mirrorHorizontalBotToTop(); //3
+		// beach.mirrorDiagonal();
 
+		// A7 1-3
+		// beach.mirrorTemple();
+		// beach.mirrorArms();
+		beach.mirrorGull();
 		beach.explore();
 	}
 } // this } is the end of class Picture, put all new methods before this
